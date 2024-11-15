@@ -20,15 +20,29 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// Serve static files and provide a basic route
+// Path to the players.json file
+const playersFilePath = path.join(__dirname, "players.json");
+
+// Serve players.json data at the root URL
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  fs.readFile(playersFilePath, "utf8", (err, data) => {
+    if (err) {
+      console.error("Error reading players.json:", err);
+      return res.status(500).json({ error: "Failed to load players data" });
+    }
+
+    try {
+      const players = JSON.parse(data);
+      res.json(players);
+    } catch (parseError) {
+      console.error("Error parsing players.json:", parseError);
+      res.status(500).json({ error: "Failed to parse players data" });
+    }
+  });
 });
 
-// Endpoint to serve players.json data
+// Endpoint to serve players.json data at /api/players
 app.get("/api/players", (req, res) => {
-  const playersFilePath = path.join(__dirname, "players.json");
-
   fs.readFile(playersFilePath, "utf8", (err, data) => {
     if (err) {
       console.error("Error reading players.json:", err);
@@ -68,7 +82,6 @@ app.post("/api/players", upload.single("img"), (req, res) => {
   }
 
   // Append new player to players.json file
-  const playersFilePath = path.join(__dirname, "players.json");
   fs.readFile(playersFilePath, "utf8", (err, data) => {
     if (err) {
       console.error("Error reading players.json:", err);
