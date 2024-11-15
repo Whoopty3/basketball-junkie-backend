@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
-const fs = require('fs'); // To read the players.json file
+const fs = require('fs');
+const cors = require('cors');
+
 
 const app = express();
 const port = process.env.PORT || 3001; // Use environment port or default to 3001
