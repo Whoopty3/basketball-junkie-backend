@@ -5,7 +5,7 @@ const path = require('path');
 const players = require('./players.json'); // Path to your players.json
 
 // Use environment variable or fallback to default port
-const defaultPort = 3001;git 
+const defaultPort = 3001;
 const port = process.env.PORT || defaultPort;
 
 // Define API routes
