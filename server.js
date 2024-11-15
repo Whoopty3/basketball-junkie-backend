@@ -6,17 +6,17 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3001;
 
-// Allow requests from your frontend URL (React app hosted elsewhere)
+// Allow requests from your frontend URL
 app.use(cors({
-  origin: 'https://your-frontend-app.onrender.com', // Update with your deployed frontend URL
+  origin: 'https://basketball-junkie-backend.onrender.com',  // Replace this with your frontend URL
 }));
 
-// Serve static files (like images or assets) if needed
+// Serve static files (optional, if you have static files like images)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Endpoint to serve players.json
+// Endpoint to serve players data
 app.get('/players', (req, res) => {
-  const playersFilePath = path.join(__dirname, 'players.json');
+  const playersFilePath = path.join(__dirname, 'players.json'); // File containing player data
 
   fs.readFile(playersFilePath, 'utf8', (err, data) => {
     if (err) {
@@ -26,7 +26,7 @@ app.get('/players', (req, res) => {
 
     try {
       const players = JSON.parse(data);
-      res.json(players);
+      res.json(players); // Send the players data as a response
     } catch (parseError) {
       console.error('Error parsing players.json:', parseError);
       res.status(500).json({ error: 'Failed to parse players data' });
@@ -34,6 +34,7 @@ app.get('/players', (req, res) => {
   });
 });
 
+// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
