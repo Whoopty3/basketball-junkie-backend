@@ -1,0 +1,43 @@
+[
+    {
+      "id": 1,
+      "name": "LeBron James",
+      "team": "Los Angeles Lakers",
+      "points": 25.7,
+      "assists": 7.9,
+      "rebounds": 8.2,
+      "fieldGoalPercentage": 50.4,
+      "threePointPercentage": 30.8
+    },
+    {
+      "id": 2,
+      "name": "Stephen Curry",
+      "team": "Golden State Warriors",
+      "points": 30.1,
+      "assists": 6.7,
+      "rebounds": 5.4,
+      "fieldGoalPercentage": 48.2,
+      "threePointPercentage": 42.1
+    },
+    {
+      "id": 3,
+      "name": "Kevin Durant",
+      "team": "Phoenix Suns",
+      "points": 29.2,
+      "assists": 5.0,
+      "rebounds": 7.0,
+      "fieldGoalPercentage": 53.7,
+      "threePointPercentage": 37.3
+    },
+    {
+      "id": 4,
+      "name": "Giannis Antetokounmpo",
+      "team": "Milwaukee Bucks",
+      "points": 29.9,
+      "assists": 5.9,
+      "rebounds": 11.2,
+      "fieldGoalPercentage": 55.3,
+      "threePointPercentage": 28.6
+    }
+  ]
+  
