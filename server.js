@@ -1,19 +1,22 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const cors = require('cors'); // Make sure cors is imported
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 3001;
 
-// Set up CORS to allow requests from your frontend domain
+// Allow requests from your frontend URL (React app hosted elsewhere)
 app.use(cors({
-  origin: 'http://localhost:3000', // Update this URL to your frontend's local development URL
+  origin: 'https://your-frontend-app.onrender.com', // Update with your deployed frontend URL
 }));
 
-// Serve players.json data at the root URL
-app.get('/', (req, res) => {
-  const playersFilePath = path.join(__dirname, 'players.json'); // Get the absolute path to players.json
+// Serve static files (like images or assets) if needed
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Endpoint to serve players.json
+app.get('/players', (req, res) => {
+  const playersFilePath = path.join(__dirname, 'players.json');
 
   fs.readFile(playersFilePath, 'utf8', (err, data) => {
     if (err) {
@@ -22,8 +25,8 @@ app.get('/', (req, res) => {
     }
 
     try {
-      const players = JSON.parse(data); // Parse the JSON data
-      res.json(players); // Send the players data as JSON
+      const players = JSON.parse(data);
+      res.json(players);
     } catch (parseError) {
       console.error('Error parsing players.json:', parseError);
       res.status(500).json({ error: 'Failed to parse players data' });
@@ -31,7 +34,6 @@ app.get('/', (req, res) => {
   });
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
