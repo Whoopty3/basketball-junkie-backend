@@ -7,8 +7,9 @@ const app = express();
 const port = process.env.PORT || 3001; // Use environment port or default to 3001
 
 // Enable CORS for all origins
-app.use(cors());
-
+app.use(cors({
+  origin: 'https://whoopty3.github.io'
+}));
 // Route for serving players data
 app.get('/api/players', (req, res) => {
   fs.readFile(path.join(__dirname, 'players.json'), 'utf8', (err, data) => {
