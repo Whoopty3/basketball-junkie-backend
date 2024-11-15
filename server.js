@@ -1,52 +1,37 @@
 const express = require('express');
-const app = express();
-const fs = require('fs');
 const path = require('path');
-const players = require('./players.json'); // Path to your players.json
+const fs = require('fs'); // To read the players.json file
 
-// Serve static files from 'public' directory
+const app = express();
+const port = process.env.PORT || 3001; // Use environment port or default to 3001
+
+// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve the index.html file for the root route
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html')); // Serve the index.html from public folder
-});
-
-// Define API routes
+// Route for serving players data
 app.get('/api/players', (req, res) => {
-  res.json(players); // Serve the players data as JSON
+  fs.readFile(path.join(__dirname, 'players.json'), 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading players.json:', err);
+      return res.status(500).json({ error: 'Failed to load players data' });
+    }
+
+    try {
+      const players = JSON.parse(data); // Parse the JSON data
+      res.json(players); // Send the players data as JSON
+    } catch (parseError) {
+      console.error('Error parsing players.json:', parseError);
+      res.status(500).json({ error: 'Failed to parse players data' });
+    }
+  });
 });
 
-// Function to check if a port is in use
-const checkPortInUse = (port) => {
-  return new Promise((resolve, reject) => {
-    const server = app.listen(port, () => {
-      server.close(); // Close the server immediately if the port is available
-      resolve(false);
-    }).on('error', (err) => {
-      if (err.code === 'EADDRINUSE') {
-        resolve(true); // Port is already in use
-      } else {
-        reject(err);
-      }
-    });
-  });
-};
+// Catch-all route for all other requests (e.g., React frontend)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
-// Function to find an available port
-const findAvailablePort = async () => {
-  let tryPort = 3001; // Starting with port 3001
-  while (await checkPortInUse(tryPort)) {
-    tryPort++; // Try the next port if the current one is in use
-  }
-  return tryPort;
-};
-
-// Set the port to the first available one
-findAvailablePort().then((availablePort) => {
-  app.listen(availablePort, () => {
-    console.log(`Server is running on port ${availablePort}`);
-  });
-}).catch((err) => {
-  console.error('Error finding available port:', err);
+// Start the server
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
