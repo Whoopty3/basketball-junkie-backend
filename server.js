@@ -1,17 +1,15 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs'); // To read the players.json file
-const cors = require('cors'); // Import CORS
 
 const app = express();
 const port = process.env.PORT || 3001; // Use environment port or default to 3001
 
-// Enable CORS for all origins
-app.use(cors({
-  origin: 'https://whoopty3.github.io'
-}));
-// Route for serving players data
-app.get('/api/players', (req, res) => {
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Route for serving players data at the root URL
+app.get('/', (req, res) => {
   fs.readFile(path.join(__dirname, 'players.json'), 'utf8', (err, data) => {
     if (err) {
       console.error('Error reading players.json:', err);
@@ -26,11 +24,6 @@ app.get('/api/players', (req, res) => {
       res.status(500).json({ error: 'Failed to parse players data' });
     }
   });
-});
-
-// Add a route for the root URL
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to the Basketball Junkie API!' });
 });
 
 // Start the server
