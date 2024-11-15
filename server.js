@@ -1,40 +1,110 @@
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
+const Joi = require("joi");
 
 const app = express();
-const port = process.env.PORT || 3001;
+app.use(cors());
+app.use(express.static("public"));
 
-// Allow requests from your frontend URL (React app hosted elsewhere)
-app.use(cors({
-  origin: ['https://basketball-junkie-frontend.onrender.com', 'http://localhost:3001'], // Update with your deployed frontend URL and local development URL
-  methods: ['GET'], // Only allow GET requests, adjust as needed
-}));
+// Configure multer for image uploads (optional)
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/images/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+const upload = multer({ storage: storage });
 
-// Serve static files (like images or assets) if needed
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve static files and provide a basic route
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
 
-// Endpoint to serve players.json
-app.get('/players', (req, res) => {
-  const playersFilePath = path.join(__dirname, 'players.json');
+// Endpoint to serve players.json data
+app.get("/api/players", (req, res) => {
+  const playersFilePath = path.join(__dirname, "players.json");
 
-  fs.readFile(playersFilePath, 'utf8', (err, data) => {
+  fs.readFile(playersFilePath, "utf8", (err, data) => {
     if (err) {
-      console.error('Error reading players.json:', err);
-      return res.status(500).json({ error: 'Failed to load players data' });
+      console.error("Error reading players.json:", err);
+      return res.status(500).json({ error: "Failed to load players data" });
     }
 
     try {
       const players = JSON.parse(data);
       res.json(players);
     } catch (parseError) {
-      console.error('Error parsing players.json:', parseError);
-      res.status(500).json({ error: 'Failed to parse players data' });
+      console.error("Error parsing players.json:", parseError);
+      res.status(500).json({ error: "Failed to parse players data" });
     }
   });
 });
 
+// Optional POST endpoint to add new players (if needed in the future)
+app.post("/api/players", upload.single("img"), (req, res) => {
+  const result = validatePlayer(req.body);
+
+  if (result.error) {
+    return res.status(400).send(result.error.details[0].message);
+  }
+
+  const newPlayer = {
+    name: req.body.name,
+    team: req.body.team,
+    points: req.body.points,
+    assists: req.body.assists,
+    rebounds: req.body.rebounds,
+    fieldGoalPercentage: req.body.fieldGoalPercentage,
+    threePointPercentage: req.body.threePointPercentage,
+  };
+
+  if (req.file) {
+    newPlayer.image = req.file.filename;
+  }
+
+  // Append new player to players.json file
+  const playersFilePath = path.join(__dirname, "players.json");
+  fs.readFile(playersFilePath, "utf8", (err, data) => {
+    if (err) {
+      console.error("Error reading players.json:", err);
+      return res.status(500).json({ error: "Failed to load players data" });
+    }
+
+    const players = JSON.parse(data);
+    players.push(newPlayer);
+
+    fs.writeFile(playersFilePath, JSON.stringify(players, null, 2), (writeErr) => {
+      if (writeErr) {
+        console.error("Error writing to players.json:", writeErr);
+        return res.status(500).json({ error: "Failed to save player data" });
+      }
+      res.status(200).send(newPlayer);
+    });
+  });
+});
+
+// Validation for player data using Joi
+const validatePlayer = (player) => {
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+    team: Joi.string().min(3).required(),
+    points: Joi.number().required(),
+    assists: Joi.number().required(),
+    rebounds: Joi.number().required(),
+    fieldGoalPercentage: Joi.number().required(),
+    threePointPercentage: Joi.number().required(),
+  });
+
+  return schema.validate(player);
+};
+
+// Start the server
+const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
