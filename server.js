@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+app.use(cors({ origin: 'https://whoopty3.github.io' }));
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
