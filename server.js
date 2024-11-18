@@ -6,9 +6,15 @@ const path = require("path");
 const Joi = require("joi");
 
 const app = express();
-app.use(cors());
+
+// Configure CORS to allow requests from the deployed frontend URL
+const corsOptions = {
+  origin: ['http://localhost:3004', 'https://whoopty3.github.io', 'https://whoopty3.github.io/basketball-junkie-react'], // Allow local and deployed frontend
+};
+app.use(cors(corsOptions));
+
 app.use(express.static("public"));
-app.use(cors({ origin: 'https://whoopty3.github.io' }));
+
 // Configure multer for image uploads (optional)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
