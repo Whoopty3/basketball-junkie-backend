@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-app.use(cors({ origin: 'https://whoopty3.github.io' }));
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
@@ -9,7 +8,7 @@ const Joi = require("joi");
 const app = express();
 app.use(cors());
 app.use(express.static("public"));
-
+app.use(cors({ origin: 'https://whoopty3.github.io' }));
 // Configure multer for image uploads (optional)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
