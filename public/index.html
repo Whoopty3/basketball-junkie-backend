@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basketball Junkie</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      color: #333;
+    }
+    .player-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin: 20px;
+    }
+    .player-card {
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 5px;
+      width: 250px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .player-card img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Basketball Junkie Players</h1>
+  <div id="player-list" class="player-list"></div>
+
+  <script>
+    // Fetch players from the backend
+    fetch("/api/players")
+      .then(response => response.json())
+      .then(players => {
+        const playerList = document.getElementById("player-list");
+
+        players.forEach(player => {
+          const playerCard = document.createElement("div");
+          playerCard.classList.add("player-card");
+
+          playerCard.innerHTML = `
+            <img src="${player.image || '/images/placeholder.png'}" alt="${player.name}" />
+            <h2>${player.name}</h2>
+            <p>Team: ${player.team}</p>
+            <p>Points: ${player.points}</p>
+            <p>Assists: ${player.assists}</p>
+            <p>Rebounds: ${player.rebounds}</p>
+            <p>FG%: ${player.fieldGoalPercentage}</p>
+            <p>3P%: ${player.threePointPercentage}</p>
+          `;
+
+          playerList.appendChild(playerCard);
+        });
+      })
+      .catch(error => {
+        console.error("Error fetching players:", error);
+      });
+  </script>
+</body>
+</html>

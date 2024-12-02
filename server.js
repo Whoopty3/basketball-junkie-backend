@@ -7,120 +7,124 @@ const Joi = require("joi");
 
 const app = express();
 
+// Middleware for parsing JSON bodies
+app.use(express.json());
+
 // Configure CORS to allow all localhost ports and specific deployed URLs
 const corsOptions = {
   origin: [
     /^http:\/\/localhost:\d+$/, // Allow all localhost ports
-    'https://whoopty3.github.io', // Allow deployed frontend URL
-    'https://whoopty3.github.io/basketball-junkie-react', // Allow deployed frontend URL
+    "https://whoopty3.github.io", // Deployed frontend URL
+    "https://whoopty3.github.io/basketball-junkie-react", // Specific subpage
   ],
 };
 app.use(cors(corsOptions));
 
-app.use(express.static("public")); // Ensure static files like images are served
+// Serve static files (like images) from the "public" directory
+app.use(express.static("public"));
 
-// Configure multer for image uploads (optional)
+// Configure multer for image uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./public/images/"); // Ensure the folder exists
+    const uploadPath = "./public/images/";
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    cb(null, file.originalname); // Save file with its original name
   },
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 // Path to the players.json file
 const playersFilePath = path.join(__dirname, "players.json");
 
-// Serve players.json data at the root URL
-app.get("/", (req, res) => {
-  fs.readFile(playersFilePath, "utf8", (err, data) => {
-    if (err) {
-      console.error("Error reading players.json:", err);
-      return res.status(500).json({ error: "Failed to load players data" });
-    }
-
-    try {
-      const players = JSON.parse(data);
-      res.json(players);
-    } catch (parseError) {
-      console.error("Error parsing players.json:", parseError);
-      res.status(500).json({ error: "Failed to parse players data" });
-    }
+// Utility function to read players.json
+const readPlayersFile = () =>
+  new Promise((resolve, reject) => {
+    fs.readFile(playersFilePath, "utf8", (err, data) => {
+      if (err) reject(err);
+      try {
+        resolve(JSON.parse(data));
+      } catch (parseError) {
+        reject(parseError);
+      }
+    });
   });
+
+// Utility function to write to players.json
+const writePlayersFile = (data) =>
+  new Promise((resolve, reject) => {
+    fs.writeFile(playersFilePath, JSON.stringify(data, null, 2), "utf8", (err) => {
+      if (err) reject(err);
+      resolve();
+    });
+  });
+
+// Endpoint to serve players.json data at the root URL
+app.get("/", async (req, res) => {
+  try {
+    const players = await readPlayersFile();
+    res.json(players);
+  } catch (err) {
+    console.error("Error loading players:", err);
+    res.status(500).json({ error: "Failed to load players data" });
+  }
 });
 
-// Endpoint to serve players.json data at /api/players
-app.get("/api/players", (req, res) => {
-  fs.readFile(playersFilePath, "utf8", (err, data) => {
-    if (err) {
-      console.error("Error reading players.json:", err);
-      return res.status(500).json({ error: "Failed to load players data" });
-    }
-
-    try {
-      const players = JSON.parse(data);
-      res.json(players); // Ensure this is a proper JSON response
-    } catch (parseError) {
-      console.error("Error parsing players.json:", parseError);
-      res.status(500).json({ error: "Failed to parse players data" });
-    }
-  });
+// Endpoint to serve players data at /api/players
+app.get("/api/players", async (req, res) => {
+  try {
+    const players = await readPlayersFile();
+    res.json(players);
+  } catch (err) {
+    console.error("Error loading players:", err);
+    res.status(500).json({ error: "Failed to load players data" });
+  }
 });
 
-// Optional POST endpoint to add new players (if needed in the future)
-app.post("/api/players", upload.single("img"), (req, res) => {
+// POST endpoint to add a new player
+app.post("/api/players", upload.single("img"), async (req, res) => {
+  // Validate input data
   const result = validatePlayer(req.body);
-
   if (result.error) {
-    return res.status(400).send(result.error.details[0].message);
+    return res.status(400).json({ error: result.error.details[0].message });
   }
 
   const newPlayer = {
     name: req.body.name,
     team: req.body.team,
-    points: req.body.points,
-    assists: req.body.assists,
-    rebounds: req.body.rebounds,
-    fieldGoalPercentage: req.body.fieldGoalPercentage,
-    threePointPercentage: req.body.threePointPercentage,
+    points: parseFloat(req.body.points),
+    assists: parseFloat(req.body.assists),
+    rebounds: parseFloat(req.body.rebounds),
+    fieldGoalPercentage: parseFloat(req.body.fieldGoalPercentage),
+    threePointPercentage: parseFloat(req.body.threePointPercentage),
+    image: req.file ? `/images/${req.file.filename}` : null, // Include image path if uploaded
   };
 
-  if (req.file) {
-    newPlayer.image = req.file.filename;
-  }
-
-  // Append new player to players.json file
-  fs.readFile(playersFilePath, "utf8", (err, data) => {
-    if (err) {
-      console.error("Error reading players.json:", err);
-      return res.status(500).json({ error: "Failed to load players data" });
-    }
-
-    const players = JSON.parse(data);
+  try {
+    const players = await readPlayersFile();
     players.push(newPlayer);
-
-    fs.writeFile(playersFilePath, JSON.stringify(players, null, 2), (writeErr) => {
-      if (writeErr) {
-        console.error("Error writing to players.json:", writeErr);
-        return res.status(500).json({ error: "Failed to save player data" });
-      }
-      res.status(200).send(newPlayer);
-    });
-  });
+    await writePlayersFile(players);
+    res.status(201).json(newPlayer);
+  } catch (err) {
+    console.error("Error saving player:", err);
+    res.status(500).json({ error: "Failed to save player data" });
+  }
 });
 
-// Validation for player data using Joi
+// Validation schema for player data
 const validatePlayer = (player) => {
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
     team: Joi.string().min(3).required(),
-    points: Joi.number().required(),
-    assists: Joi.number().required(),
-    rebounds: Joi.number().required(),
-    fieldGoalPercentage: Joi.number().required(),
-    threePointPercentage: Joi.number().required(),
+    points: Joi.number().positive().required(),
+    assists: Joi.number().positive().required(),
+    rebounds: Joi.number().positive().required(),
+    fieldGoalPercentage: Joi.number().positive().required(),
+    threePointPercentage: Joi.number().positive().required(),
   });
 
   return schema.validate(player);
