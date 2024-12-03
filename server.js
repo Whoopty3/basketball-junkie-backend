@@ -4,6 +4,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const Joi = require("joi");
+const sanitize = require("sanitize-filename");
 
 const app = express();
 
@@ -33,7 +34,9 @@ const storage = multer.diskStorage({
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname); // Save file with its original name
+    // Sanitize the file name to avoid special characters or spaces
+    const sanitizedFileName = sanitize(file.originalname);
+    cb(null, sanitizedFileName);
   },
 });
 const upload = multer({ storage });
@@ -93,6 +96,11 @@ app.post("/api/players", upload.single("img"), async (req, res) => {
     return res.status(400).json({ error: result.error.details[0].message });
   }
 
+  // Check if image was uploaded successfully
+  if (!req.file) {
+    return res.status(400).json({ error: "Image file is required" });
+  }
+
   const newPlayer = {
     name: req.body.name,
     team: req.body.team,
@@ -101,7 +109,7 @@ app.post("/api/players", upload.single("img"), async (req, res) => {
     rebounds: parseFloat(req.body.rebounds),
     fieldGoalPercentage: parseFloat(req.body.fieldGoalPercentage),
     threePointPercentage: parseFloat(req.body.threePointPercentage),
-    image: req.file ? `/images/${req.file.filename}` : null, // Include image path if uploaded
+    image: `/images/${req.file.filename}`, // Include image path if uploaded
   };
 
   try {
@@ -112,6 +120,64 @@ app.post("/api/players", upload.single("img"), async (req, res) => {
   } catch (err) {
     console.error("Error saving player:", err);
     res.status(500).json({ error: "Failed to save player data" });
+  }
+});
+
+// PUT endpoint to edit an existing player
+app.put("/api/players/:id", upload.single("img"), async (req, res) => {
+  const playerId = req.params.id;
+  const result = validatePlayer(req.body);
+  if (result.error) {
+    return res.status(400).json({ error: result.error.details[0].message });
+  }
+
+  try {
+    const players = await readPlayersFile();
+    const playerIndex = players.findIndex((player) => player.id === playerId);
+
+    if (playerIndex === -1) {
+      return res.status(404).json({ error: "Player not found" });
+    }
+
+    const updatedPlayer = {
+      ...players[playerIndex],
+      name: req.body.name,
+      team: req.body.team,
+      points: parseFloat(req.body.points),
+      assists: parseFloat(req.body.assists),
+      rebounds: parseFloat(req.body.rebounds),
+      fieldGoalPercentage: parseFloat(req.body.fieldGoalPercentage),
+      threePointPercentage: parseFloat(req.body.threePointPercentage),
+      image: req.file ? `/images/${req.file.filename}` : players[playerIndex].image, // Update image if uploaded
+    };
+
+    players[playerIndex] = updatedPlayer;
+    await writePlayersFile(players);
+    res.status(200).json(updatedPlayer);
+  } catch (err) {
+    console.error("Error updating player:", err);
+    res.status(500).json({ error: "Failed to update player data" });
+  }
+});
+
+// DELETE endpoint to remove a player
+app.delete("/api/players/:id", async (req, res) => {
+  const playerId = req.params.id;
+
+  try {
+    const players = await readPlayersFile();
+    const playerIndex = players.findIndex((player) => player.id === playerId);
+
+    if (playerIndex === -1) {
+      return res.status(404).json({ error: "Player not found" });
+    }
+
+    players.splice(playerIndex, 1); // Remove the player
+    await writePlayersFile(players);
+    res.status(200).json({ message: "Player deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting player:", err);
+    res.status(500).json({ error: "Failed to delete player" });
   }
 });
 
