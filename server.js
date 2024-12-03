@@ -4,7 +4,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 const Joi = require("joi");
-
+const { v4: uuidv4 } = require("uuid"); // Add uuid for generating unique ids
 
 const app = express();
 
@@ -102,6 +102,7 @@ app.post("/api/players", upload.single("img"), async (req, res) => {
   }
 
   const newPlayer = {
+    id: uuidv4(), // Generate a unique ID for the player
     name: req.body.name,
     team: req.body.team,
     points: parseFloat(req.body.points),
@@ -114,9 +115,9 @@ app.post("/api/players", upload.single("img"), async (req, res) => {
 
   try {
     const players = await readPlayersFile();
-    players.push(newPlayer);
-    await writePlayersFile(players);
-    res.status(201).json(newPlayer);
+    players.push(newPlayer); // Add the new player to the list
+    await writePlayersFile(players); // Write the updated list back to players.json
+    res.status(201).json(newPlayer); // Respond with the newly added player
   } catch (err) {
     console.error("Error saving player:", err);
     res.status(500).json({ error: "Failed to save player data" });
