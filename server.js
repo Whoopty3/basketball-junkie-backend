@@ -5,12 +5,12 @@ const Joi = require("joi");
 
 const app = express();
 
-// Middleware
+
 app.use(cors());
 app.use(express.static("public"));
 app.use(express.json());
 
-// Multer setup for file uploads
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./public/images/");
@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// In-memory database of players
+
 const players = [
   {
     _id: 1,
@@ -419,108 +419,64 @@ const players = [
     "fieldGoalPercentage": 44.8,
     "threePointPercentage": 38.1
   }
-  // More player objects...
 ];
+app.get("/players", (req, res) => {
+  res.json(players);
+});
 
-// Validation function for player data
-function validatePlayer(player) {
+// Edit a player
+app.put("/players/:id", (req, res) => {
+  const playerId = parseInt(req.params.id);
+  const playerIndex = players.findIndex(player => player._id === playerId);
+
+  if (playerIndex === -1) {
+    return res.status(404).send("Player not found");
+  }
+
+  const updatedPlayer = req.body;
+
+
   const schema = Joi.object({
-    name: Joi.string().min(3).max(50).required(),
-    team: Joi.string().min(3).max(50).required(),
-    position: Joi.string().valid("PG", "SG", "SF", "PF", "C").required(),
-    points_per_game: Joi.number().min(0).required(),
-    assists_per_game: Joi.number().min(0).required(),
-    rebounds_per_game: Joi.number().min(0).required(),
-    field_goal_percentage: Joi.number().min(0).max(100).required(),
-    three_point_percentage: Joi.number().min(0).max(100).required(),
+    name: Joi.string().min(3).required(),
+    team: Joi.string().min(3).required(),
+    position: Joi.string().min(1).required(),
+    points_per_game: Joi.number().required(),
+    assists_per_game: Joi.number().required(),
+    rebounds_per_game: Joi.number().required(),
+    field_goal_percentage: Joi.number().required(),
+    three_point_percentage: Joi.number().required(),
+    main_image: Joi.string().required(),
   });
 
-  return schema.validate(player);
-}
+  const { error } = schema.validate(updatedPlayer);
 
-// Routes
-// Serve the index.html page when visiting the root route
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");  // Serve index.html
-});
-
-// Get all players
-app.get("/api/players", (req, res) => {
-  res.json(players);  // Sends player data as JSON
-});
-
-// Add a new player
-app.post("/api/players", upload.single("img"), (req, res) => {
-  const result = validatePlayer(req.body);
-
-  if (result.error) {
-    return res.status(400).send(result.error.details[0].message);
+  if (error) {
+    return res.status(400).send(error.details[0].message);
   }
 
-  const player = {
-    _id: players.length + 1,
-    name: req.body.name,
-    team: req.body.team,
-    position: req.body.position,
-    points_per_game: req.body.points_per_game,
-    assists_per_game: req.body.assists_per_game,
-    rebounds_per_game: req.body.rebounds_per_game,
-    field_goal_percentage: req.body.field_goal_percentage,
-    three_point_percentage: req.body.three_point_percentage,
-  };
+  // Update the player details
+  players[playerIndex] = { _id: playerId, ...updatedPlayer };
 
-  if (req.file) {
-    player.main_image = req.file.filename;
-  }
-
-  players.push(player);
-  res.status(200).send(player);
-});
-
-// Update an existing player
-app.put("/api/players/:id", upload.single("img"), (req, res) => {
-  const player = players.find((p) => p._id === parseInt(req.params.id));
-
-  if (!player) {
-    return res.status(404).send("The player with the provided id was not found");
-  }
-
-  const result = validatePlayer(req.body);
-
-  if (result.error) {
-    return res.status(400).send(result.error.details[0].message);
-  }
-
-  player.name = req.body.name;
-  player.team = req.body.team;
-  player.position = req.body.position;
-  player.points_per_game = req.body.points_per_game;
-  player.assists_per_game = req.body.assists_per_game;
-  player.rebounds_per_game = req.body.rebounds_per_game;
-  player.field_goal_percentage = req.body.field_goal_percentage;
-  player.three_point_percentage = req.body.three_point_percentage;
-
-  if (req.file) {
-    player.main_image = req.file.filename;
-  }
-
-  res.status(200).send(player);
+  res.json(players[playerIndex]);
 });
 
 // Delete a player
-app.delete("/api/players/:id", (req, res) => {
-  const playerIndex = players.findIndex((p) => p._id === parseInt(req.params.id));
+app.delete("/players/:id", (req, res) => {
+  const playerId = parseInt(req.params.id);
+  const playerIndex = players.findIndex(player => player._id === playerId);
 
   if (playerIndex === -1) {
-    return res.status(404).send("The player with the provided id was not found");
+    return res.status(404).send("Player not found");
   }
 
-  const deletedPlayer = players.splice(playerIndex, 1);
-  res.status(200).send(deletedPlayer);
+  // Remove player from the array
+  players.splice(playerIndex, 1);
+
+  res.status(200).send("Player deleted successfully");
 });
 
 // Start the server
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
