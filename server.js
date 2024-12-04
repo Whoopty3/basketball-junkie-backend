@@ -421,7 +421,7 @@ const players = [
   }
 ];
 app.get("/players", (req, res) => {
-  res.json(players);
+  res.json(/api/players);
 });
 
 // Edit a player
