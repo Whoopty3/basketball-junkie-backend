@@ -420,7 +420,7 @@ const players = [
     "threePointPercentage": 38.1
   }
 ];
-app.get("/api/players", (req, res) => {
+app.post("/api/players", (req, res) => {
   res.json(players);
 });
 
