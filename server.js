@@ -419,6 +419,20 @@ const players = [
     "threePointPercentage": 38.1
   }
 ];
+// POST route to add a new player
+app.post("/players", (req, res) => {
+  const { error, value } = playerSchema.validate(req.body);
+  if (error) {
+    return res.status(400).send({ error: error.details[0].message });
+  }
+
+  const newPlayer = {
+    _id: players.length + 1, // Generate a new unique ID
+    ...value,
+  };
+  players.push(newPlayer);
+  res.status(201).send(newPlayer); // Return the new player with a 201 status
+});
 app.get("/api/players", (req, res) => {
   res.json(players);
 });
