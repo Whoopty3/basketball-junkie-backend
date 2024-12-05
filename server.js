@@ -420,12 +420,12 @@ const players = [
     "threePointPercentage": 38.1
   }
 ];
-app.get("https://basketball-junkie-backend.onrender.com/api/players", (req, res) => {
+app.get("/api/players", (req, res) => {
   res.json(players);
 });
 
 // Edit a player
-app.put("https://basketball-junkie-backend.onrender.com/api/players", (req, res) => {
+app.put("/api/players", (req, res) => {
   const playerId = parseInt(req.params.id);
   const playerIndex = players.findIndex(player => player._id === playerId);
 
@@ -461,7 +461,7 @@ app.put("https://basketball-junkie-backend.onrender.com/api/players", (req, res)
 });
 
 // Delete a player
-app.delete("https://basketball-junkie-backend.onrender.com/api/players", (req, res) => {
+app.delete("/api/players", (req, res) => {
   const playerId = parseInt(req.params.id);
   const playerIndex = players.findIndex(player => player._id === playerId);
 
