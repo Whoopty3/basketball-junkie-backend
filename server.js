@@ -420,7 +420,7 @@ const players = [
   }
 ];
 // POST route to add a new player
-app.post("/players", (req, res) => {
+app.post("/api/players", (req, res) => {
   const { error, value } = playerSchema.validate(req.body);
   if (error) {
     return res.status(400).send({ error: error.details[0].message });
