@@ -425,7 +425,7 @@ app.get("/api/players", (req, res) => {
 });
 
 // Edit a player
-app.put("/players/:id", (req, res) => {
+app.put("/api/players/:id", (req, res) => {
   const playerId = parseInt(req.params.id);
   const playerIndex = players.findIndex(player => player._id === playerId);
 
@@ -461,7 +461,7 @@ app.put("/players/:id", (req, res) => {
 });
 
 // Delete a player
-app.delete("/players/:id", (req, res) => {
+app.delete("/api/players/:id", (req, res) => {
   const playerId = parseInt(req.params.id);
   const playerIndex = players.findIndex(player => player._id === playerId);
 
