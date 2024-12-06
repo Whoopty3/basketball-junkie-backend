@@ -16,6 +16,14 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
+const corsOptions = {
+  origin: 'https://whoopty3.github.io', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  allowedHeaders: ['Content-Type', 'Authorization'], 
+};
+
+app.use(cors(corsOptions)); 
+
 
 const upload = multer({ storage: storage });
 
@@ -29,7 +37,7 @@ mongoose
     console.log("Couldn't connect to MongoDB", error);
   });
 
-// Define the schema for Player data (replace house with player details)
+
 const playerSchema = new mongoose.Schema({
   name: String,
   team: String,
@@ -59,7 +67,7 @@ app.get("/api/players", async (req, res) => {
   }
 });
 
-// API endpoint to create a new player
+
 app.post("/api/players", upload.single("img"), async (req, res) => {
   const result = validatePlayer(req.body);
 
@@ -79,7 +87,7 @@ app.post("/api/players", upload.single("img"), async (req, res) => {
     three_point_percentage: req.body.three_point_percentage,
   });
 
-  // If a file was uploaded, store the filename
+  
   if (req.file) {
     player.main_image = req.file.filename;
   }
