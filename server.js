@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
 const app = express();
 const Joi = require("joi");
 app.use(express.static("public"));
@@ -31,7 +32,6 @@ mongoose
     console.log("Couldn't connect to MongoDB", error);
   });
 
-
 const playerSchema = new mongoose.Schema({
   name: String,
   team: String,
@@ -46,22 +46,28 @@ const playerSchema = new mongoose.Schema({
 
 const Player = mongoose.model("Player", playerSchema);
 
+// Load players data from players.json
+const getPlayersFromJson = () => {
+  return JSON.parse(fs.readFileSync('players.json', 'utf-8'));
+};
+
 // Get request for index.html
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-// API endpoint to get all players
+// API endpoint to get all players from players.json
 app.get("/api/players", async (req, res) => {
   try {
-    const players = await Player.find();
+    // Fetch players from players.json file
+    const players = getPlayersFromJson();
     res.status(200).send(players);
   } catch (error) {
     res.status(500).send("Error fetching players");
   }
 });
 
-
+// API endpoint to post new players (using MongoDB)
 app.post("/api/players", upload.single("image"), async (req, res) => {
   const { error } = playerJoiSchema.validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -77,7 +83,6 @@ app.post("/api/players", upload.single("image"), async (req, res) => {
     three_point_percentage: req.body.three_point_percentage,
   });
 
-  
   if (req.file) {
     player.main_image = req.file.filename;
   }
@@ -90,7 +95,7 @@ app.post("/api/players", upload.single("image"), async (req, res) => {
   }
 });
 
-// API endpoint to update a player's details by ID
+// API endpoint to update a player's details by ID (using MongoDB)
 app.put("/api/players/:id", upload.single("img"), async (req, res) => {
   const result = validatePlayer(req.body);
 
@@ -127,7 +132,7 @@ app.put("/api/players/:id", upload.single("img"), async (req, res) => {
   }
 });
 
-// API endpoint to delete a player by ID
+// API endpoint to delete a player by ID (using MongoDB)
 app.delete("/api/players/:id", async (req, res) => {
   try {
     const player = await Player.findByIdAndDelete(req.params.id);
