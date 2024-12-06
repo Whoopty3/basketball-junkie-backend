@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const Joi = require("joi");
-app.use(cors());
 app.use(express.static("public"));
 const multer = require("multer");
 const mongoose = require("mongoose");
@@ -16,14 +15,10 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-const corsOptions = {
-  origin: 'https://whoopty3.github.io', 
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
-  allowedHeaders: ['Content-Type', 'Authorization'], 
-};
-
-app.use(cors(corsOptions)); 
-
+const cors = require('cors');
+app.use(cors({
+  origin: 'https://whoopty3.github.io', // Allow requests from your frontend
+}));
 
 const upload = multer({ storage: storage });
 
@@ -68,13 +63,9 @@ app.get("/api/players", async (req, res) => {
 });
 
 
-app.post("/api/players", upload.single("img"), async (req, res) => {
-  const result = validatePlayer(req.body);
-
-  if (result.error) {
-    res.status(400).send(result.error.details[0].message);
-    return;
-  }
+app.post("/api/players", upload.single("image"), async (req, res) => {
+  const { error } = playerJoiSchema.validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
 
   const player = new Player({
     name: req.body.name,
