@@ -46,30 +46,25 @@ const playerSchema = new mongoose.Schema({
 
 const Player = mongoose.model("Player", playerSchema);
 
-// Load players data from players.json
-const getPlayersFromJson = () => {
-  return JSON.parse(fs.readFileSync('players.json', 'utf-8'));
-};
-
 // Get request for index.html
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-// API endpoint to get all players from players.json
+// API endpoint to get all players from MongoDB
 app.get("/api/players", async (req, res) => {
   try {
-    // Fetch players from players.json file
-    const players = getPlayersFromJson();
+    // Fetch players from MongoDB
+    const players = await Player.find();
     res.status(200).send(players);
   } catch (error) {
-    res.status(500).send("Error fetching players");
+    res.status(500).send("Error fetching players from MongoDB");
   }
 });
 
 // API endpoint to post new players (using MongoDB)
 app.post("/api/players", upload.single("image"), async (req, res) => {
-  const { error } = playerJoiSchema.validate(req.body);
+  const { error } = validatePlayer(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
   const player = new Player({
