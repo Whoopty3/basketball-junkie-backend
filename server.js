@@ -7,6 +7,10 @@ app.use(express.static("public"));
 const multer = require("multer");
 const mongoose = require("mongoose");
 
+// Middleware to parse JSON and URL-encoded data
+app.use(express.json()); // Parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+
 // Set up the image upload directory and filename
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -46,24 +50,35 @@ const playerSchema = new mongoose.Schema({
 
 const Player = mongoose.model("Player", playerSchema);
 
+// Load players data from players.json
+const getPlayersFromJson = () => {
+  return JSON.parse(fs.readFileSync('players.json', 'utf-8'));
+};
+
 // Get request for index.html
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-// API endpoint to get all players from MongoDB
+// API endpoint to get all players from players.json
 app.get("/api/players", async (req, res) => {
   try {
-    // Fetch players from MongoDB
-    const players = await Player.find();
+    // Fetch players from players.json file
+    const players = getPlayersFromJson();
     res.status(200).send(players);
   } catch (error) {
-    res.status(500).send("Error fetching players from MongoDB");
+    res.status(500).send("Error fetching players");
   }
 });
 
 // API endpoint to post new players (using MongoDB)
 app.post("/api/players", upload.single("image"), async (req, res) => {
+  // Check if body data exists
+  if (!req.body || !req.body.name) {
+    return res.status(400).send("Player name is required.");
+  }
+
+  // Validate player data using Joi schema
   const { error } = validatePlayer(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
