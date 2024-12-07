@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
   },
 });
 app.use(cors({
-  origin: 'https://whoopty3.github.io', // Allow requests from your frontend
+  origin: ['http://localhost:3000', 'https://whoopty3.github.io'], // Allow both development and production origins
 }));
 
 const upload = multer({ storage: storage });
