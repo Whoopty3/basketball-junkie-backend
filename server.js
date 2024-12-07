@@ -21,7 +21,14 @@ const storage = multer.diskStorage({
   },
 });
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://whoopty3.github.io'], // Allow both development and production origins
+  origin: (origin, callback) => {
+    if (!origin || /localhost:\d{4,5}/.test(origin)) {
+      // Allow any localhost domain or port
+      callback(null, true);
+    } else {
+      callback(new Error("CORS policy violation: Invalid origin"), false);
+    }
+  },
 }));
 
 const upload = multer({ storage: storage });
