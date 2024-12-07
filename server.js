@@ -1,4 +1,3 @@
-require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
@@ -50,7 +49,7 @@ app.use(cors({
   },
 }));
 
-// MongoDB connection string (preserved as per your request)
+// MongoDB connection string (hardcoded directly)
 const mongoURI = "mongodb+srv://Whoopty3:Seminoles1@cluster0.tulc6.mongodb.net/Basketball?retryWrites=true&w=majority";
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
