@@ -1,397 +1,252 @@
 [
   {
-    "id": 1,
-    "name": "LeBron James",
-    "team": "Los Angeles Lakers",
-    "points": 25.7,
-    "assists": 7.9,
-    "rebounds": 8.2,
-    "fieldGoalPercentage": 50.4,
-    "threePointPercentage": 30.8
-  },
-  {
-    "id": 2,
-    "name": "Stephen Curry",
-    "team": "Golden State Warriors",
-    "points": 30.1,
-    "assists": 6.7,
-    "rebounds": 5.4,
-    "fieldGoalPercentage": 48.2,
-    "threePointPercentage": 42.1
-  },
-  {
-    "id": 3,
-    "name": "Kevin Durant",
-    "team": "Phoenix Suns",
-    "points": 29.2,
-    "assists": 5.0,
-    "rebounds": 7.0,
-    "fieldGoalPercentage": 53.7,
-    "threePointPercentage": 37.3
-  },
-  {
-    "id": 4,
-    "name": "Giannis Antetokounmpo",
-    "team": "Milwaukee Bucks",
-    "points": 29.9,
-    "assists": 5.9,
-    "rebounds": 11.2,
-    "fieldGoalPercentage": 55.3,
-    "threePointPercentage": 28.6
-  },
-  {
-    "id": 5,
-    "name": "Luka Dončić",
-    "team": "Dallas Mavericks",
-    "points": 32.5,
-    "assists": 8.7,
-    "rebounds": 9.0,
-    "fieldGoalPercentage": 49.0,
-    "threePointPercentage": 36.8
-  },
-  {
-    "id": 6,
-    "name": "Jayson Tatum",
-    "team": "Boston Celtics",
-    "points": 28.6,
-    "assists": 4.7,
-    "rebounds": 8.0,
-    "fieldGoalPercentage": 46.8,
-    "threePointPercentage": 38.1
-  },
-  {
-    "id": 7,
-    "name": "Joel Embiid",
-    "team": "Philadelphia 76ers",
-    "points": 33.1,
-    "assists": 4.2,
-    "rebounds": 10.3,
-    "fieldGoalPercentage": 54.1,
-    "threePointPercentage": 33.0
-  },
-  {
-    "id": 8,
-    "name": "Nikola Jokić",
-    "team": "Denver Nuggets",
-    "points": 24.8,
-    "assists": 9.8,
-    "rebounds": 11.9,
-    "fieldGoalPercentage": 63.2,
-    "threePointPercentage": 38.2
-  },
-  {
-    "id": 9,
-    "name": "Damian Lillard",
-    "team": "Milwaukee Bucks",
-    "points": 27.8,
-    "assists": 6.3,
-    "rebounds": 4.5,
-    "fieldGoalPercentage": 45.9,
-    "threePointPercentage": 37.8
-  },
-  {
-    "id": 10,
-    "name": "Jimmy Butler",
-    "team": "Miami Heat",
-    "points": 22.9,
-    "assists": 5.3,
-    "rebounds": 6.3,
-    "fieldGoalPercentage": 53.6,
-    "threePointPercentage": 35.1
-  },
-  {
-    "id": 11,
-    "name": "Ja Morant",
-    "team": "Memphis Grizzlies",
-    "points": 26.2,
-    "assists": 7.4,
-    "rebounds": 5.9,
-    "fieldGoalPercentage": 46.5,
-    "threePointPercentage": 32.8
-  },
-  {
-    "id": 12,
-    "name": "Kawhi Leonard",
-    "team": "Los Angeles Clippers",
-    "points": 25.1,
-    "assists": 4.1,
-    "rebounds": 6.3,
-    "fieldGoalPercentage": 51.3,
-    "threePointPercentage": 39.7
-  },
-  {
-    "id": 13,
-    "name": "Paul George",
-    "team": "Los Angeles Clippers",
-    "points": 23.8,
-    "assists": 5.1,
-    "rebounds": 6.1,
-    "fieldGoalPercentage": 47.2,
-    "threePointPercentage": 40.3
-  },
-  {
-    "id": 14,
-    "name": "Anthony Davis",
-    "team": "Los Angeles Lakers",
-    "points": 24.5,
-    "assists": 2.9,
-    "rebounds": 12.3,
-    "fieldGoalPercentage": 56.2,
-    "threePointPercentage": 29.8
-  },
-  {
-    "id": 15,
-    "name": "Zion Williamson",
-    "team": "New Orleans Pelicans",
-    "points": 25.4,
-    "assists": 3.9,
-    "rebounds": 7.0,
-    "fieldGoalPercentage": 61.1,
-    "threePointPercentage": 28.1
-  },
-  {
-    "id": 16,
-    "name": "Devin Booker",
-    "team": "Phoenix Suns",
-    "points": 27.6,
-    "assists": 6.3,
-    "rebounds": 4.6,
-    "fieldGoalPercentage": 48.9,
-    "threePointPercentage": 37.2
-  },
-  {
-    "id": 17,
-    "name": "Donovan Mitchell",
-    "team": "Cleveland Cavaliers",
-    "points": 27.4,
-    "assists": 4.5,
-    "rebounds": 4.2,
-    "fieldGoalPercentage": 47.7,
-    "threePointPercentage": 38.6
-  },
-  {
-    "id": 18,
-    "name": "Shai Gilgeous-Alexander",
-    "team": "Oklahoma City Thunder",
-    "points": 31.4,
-    "assists": 5.6,
-    "rebounds": 4.8,
-    "fieldGoalPercentage": 51.3,
-    "threePointPercentage": 34.5
-  },
-  {
-    "id": 19,
-    "name": "Jaylen Brown",
-    "team": "Boston Celtics",
-    "points": 26.2,
-    "assists": 3.4,
-    "rebounds": 6.7,
-    "fieldGoalPercentage": 49.1,
-    "threePointPercentage": 37.3
-  },
-  {
-    "id": 20,
-    "name": "Brandon Ingram",
-    "team": "New Orleans Pelicans",
-    "points": 24.7,
-    "assists": 5.5,
-    "rebounds": 5.0,
-    "fieldGoalPercentage": 48.6,
-    "threePointPercentage": 39.2
-  },
-  {
-    "id": 21,
-    "name": "Tyrese Haliburton",
-    "team": "Indiana Pacers",
-    "points": 21.6,
-    "assists": 8.7,
-    "rebounds": 3.0,
-    "fieldGoalPercentage": 46.5,
-    "threePointPercentage": 28.4
-  },
-
-  {
-    "id": 17,
-    "name": "Donovan Mitchell",
-    "team": "Cleveland Cavaliers",
-    "points": 27.4,
-    "assists": 4.5,
-    "rebounds": 4.2,
-    "fieldGoalPercentage": 47.6,
-    "threePointPercentage": 38.4
-  },
-  {
-    "id": 18,
-    "name": "Karl-Anthony Towns",
-    "team": "Minnesota Timberwolves",
-    "points": 22.7,
-    "assists": 4.1,
-    "rebounds": 8.9,
-    "fieldGoalPercentage": 49.8,
-    "threePointPercentage": 37.5
-  },
-  {
-    "id": 19,
-    "name": "Trae Young",
-    "team": "Atlanta Hawks",
-    "points": 26.2,
-    "assists": 9.7,
-    "rebounds": 3.1,
-    "fieldGoalPercentage": 43.8,
-    "threePointPercentage": 34.3
-  },
-  {
-    "id": 20,
-    "name": "Shai Gilgeous-Alexander",
-    "team": "Oklahoma City Thunder",
-    "points": 31.4,
-    "assists": 5.5,
-    "rebounds": 4.8,
-    "fieldGoalPercentage": 51.0,
-    "threePointPercentage": 35.5
-  },
-  {
-    "id": 21,
-    "name": "De'Aaron Fox",
-    "team": "Sacramento Kings",
-    "points": 25.5,
-    "assists": 6.1,
-    "rebounds": 4.2,
-    "fieldGoalPercentage": 51.2,
-    "threePointPercentage": 32.7
-  },
-  {
-    "id": 22,
-    "name": "Brandon Ingram",
-    "team": "New Orleans Pelicans",
-    "points": 24.7,
-    "assists": 5.8,
-    "rebounds": 5.5,
-    "fieldGoalPercentage": 47.9,
-    "threePointPercentage": 39.2
-  },
-  {
-    "id": 23,
-    "name": "Jamal Murray",
-    "team": "Denver Nuggets",
-    "points": 21.1,
-    "assists": 6.2,
-    "rebounds": 4.0,
-    "fieldGoalPercentage": 45.3,
-    "threePointPercentage": 38.8
-  },
-  {
     "id": 24,
-    "name": "LaMelo Ball",
-    "team": "Charlotte Hornets",
-    "points": 23.3,
-    "assists": 8.4,
-    "rebounds": 6.5,
-    "fieldGoalPercentage": 42.6,
-    "threePointPercentage": 36.9
-  },
-  {
-    "id": 25,
-    "name": "Tyrese Haliburton",
-    "team": "Indiana Pacers",
-    "points": 20.7,
-    "assists": 10.4,
-    "rebounds": 3.8,
-    "fieldGoalPercentage": 48.5,
-    "threePointPercentage": 40.8
-  },
-  {
-    "id": 26,
-    "name": "Chris Paul",
-    "team": "Golden State Warriors",
-    "points": 13.9,
-    "assists": 8.9,
-    "rebounds": 4.1,
-    "fieldGoalPercentage": 44.7,
-    "threePointPercentage": 37.6
-  },
-  {
-    "id": 27,
     "name": "Kyrie Irving",
     "team": "Dallas Mavericks",
-    "points": 26.0,
-    "assists": 5.5,
+    "points": 27.1,
+    "assists": 5.6,
     "rebounds": 5.1,
-    "fieldGoalPercentage": 49.1,
+    "fieldGoalPercentage": 47.1,
     "threePointPercentage": 39.4
   },
   {
+    "id": 25,
+    "name": "Carmelo Anthony",
+    "team": "Free Agent",
+    "points": 13.3,
+    "assists": 1.1,
+    "rebounds": 5.2,
+    "fieldGoalPercentage": 44.4,
+    "threePointPercentage": 35.9
+  },
+  {
+    "id": 26,
+    "name": "Jaren Jackson Jr.",
+    "team": "Memphis Grizzlies",
+    "points": 18.6,
+    "assists": 1.1,
+    "rebounds": 6.7,
+    "fieldGoalPercentage": 51.8,
+    "threePointPercentage": 33.5
+  },
+  {
+    "id": 27,
+    "name": "Deandre Ayton",
+    "team": "Portland Trail Blazers",
+    "points": 18.3,
+    "assists": 1.7,
+    "rebounds": 10.2,
+    "fieldGoalPercentage": 59.4,
+    "threePointPercentage": 0
+  },
+  {
     "id": 28,
-    "name": "Pascal Siakam",
+    "name": "Fred VanVleet",
     "team": "Toronto Raptors",
-    "points": 24.1,
-    "assists": 5.8,
-    "rebounds": 7.8,
-    "fieldGoalPercentage": 48.0,
-    "threePointPercentage": 32.5
+    "points": 19.3,
+    "assists": 7.2,
+    "rebounds": 4.1,
+    "fieldGoalPercentage": 41.8,
+    "threePointPercentage": 36.5
   },
   {
     "id": 29,
-    "name": "Zach LaVine",
+    "name": "DeMar DeRozan",
     "team": "Chicago Bulls",
-    "points": 24.8,
-    "assists": 4.2,
-    "rebounds": 4.5,
-    "fieldGoalPercentage": 48.5,
-    "threePointPercentage": 38.3
+    "points": 25.6,
+    "assists": 5.1,
+    "rebounds": 4.3,
+    "fieldGoalPercentage": 50.2,
+    "threePointPercentage": 26.7
   },
   {
     "id": 30,
-    "name": "Jalen Brunson",
-    "team": "New York Knicks",
-    "points": 23.8,
-    "assists": 6.2,
-    "rebounds": 3.5,
-    "fieldGoalPercentage": 49.0,
-    "threePointPercentage": 41.0
+    "name": "Buddy Hield",
+    "team": "Indiana Pacers",
+    "points": 16.8,
+    "assists": 2.8,
+    "rebounds": 4.9,
+    "fieldGoalPercentage": 46.3,
+    "threePointPercentage": 42.2
   },
   {
     "id": 31,
-    "name": "Darius Garland",
-    "team": "Cleveland Cavaliers",
-    "points": 21.7,
-    "assists": 7.8,
-    "rebounds": 2.8,
-    "fieldGoalPercentage": 46.2,
-    "threePointPercentage": 38.9
+    "name": "John Collins",
+    "team": "Utah Jazz",
+    "points": 13.9,
+    "assists": 1.4,
+    "rebounds": 6.5,
+    "fieldGoalPercentage": 51.1,
+    "threePointPercentage": 30.5
   },
   {
     "id": 32,
-    "name": "Jaylen Brown",
-    "team": "Boston Celtics",
-    "points": 26.7,
-    "assists": 3.5,
-    "rebounds": 6.9,
-    "fieldGoalPercentage": 49.2,
-    "threePointPercentage": 35.8
+    "name": "Jarrett Allen",
+    "team": "Cleveland Cavaliers",
+    "points": 14.7,
+    "assists": 1.1,
+    "rebounds": 10.1,
+    "fieldGoalPercentage": 66.6,
+    "threePointPercentage": 0
   },
   {
     "id": 33,
-    "name": "Bam Adebayo",
-    "team": "Miami Heat",
-    "points": 21.0,
-    "assists": 3.3,
-    "rebounds": 9.4,
-    "fieldGoalPercentage": 54.1,
-    "threePointPercentage": 10.0
+    "name": "Russell Westbrook",
+    "team": "Los Angeles Clippers",
+    "points": 15.9,
+    "assists": 7.5,
+    "rebounds": 4.9,
+    "fieldGoalPercentage": 43.6,
+    "threePointPercentage": 29.8
   },
   {
     "id": 34,
-    "name": "CJ McCollum",
-    "team": "New Orleans Pelicans",
-    "points": 21.9,
-    "assists": 5.7,
-    "rebounds": 4.4,
-    "fieldGoalPercentage": 44.8,
+    "name": "Myles Turner",
+    "team": "Indiana Pacers",
+    "points": 18.0,
+    "assists": 1.3,
+    "rebounds": 7.5,
+    "fieldGoalPercentage": 54.5,
+    "threePointPercentage": 37.8
+  },
+  {
+    "id": 35,
+    "name": "Clint Capela",
+    "team": "Atlanta Hawks",
+    "points": 13.1,
+    "assists": 0.7,
+    "rebounds": 12.1,
+    "fieldGoalPercentage": 58.6,
+    "threePointPercentage": 0
+  },
+  {
+    "id": 36,
+    "name": "Bam Adebayo",
+    "team": "Miami Heat",
+    "points": 21.7,
+    "assists": 3.4,
+    "rebounds": 9.1,
+    "fieldGoalPercentage": 55.7,
+    "threePointPercentage": 18.1
+  },
+  {
+    "id": 37,
+    "name": "De'Andre Hunter",
+    "team": "Atlanta Hawks",
+    "points": 14.7,
+    "assists": 1.4,
+    "rebounds": 4.2,
+    "fieldGoalPercentage": 46.3,
+    "threePointPercentage": 37.1
+  },
+  {
+    "id": 38,
+    "name": "Darius Garland",
+    "team": "Cleveland Cavaliers",
+    "points": 21.6,
+    "assists": 7.7,
+    "rebounds": 3.3,
+    "fieldGoalPercentage": 45.2,
+    "threePointPercentage": 35.1
+  },
+  {
+    "id": 39,
+    "name": "Malcolm Brogdon",
+    "team": "Boston Celtics",
+    "points": 15.7,
+    "assists": 4.5,
+    "rebounds": 4.2,
+    "fieldGoalPercentage": 48.3,
     "threePointPercentage": 38.1
-  }
-]
-
-
-
-
+  },
+  {
+    "id": 40,
+    "name": "Aaron Gordon",
+    "team": "Denver Nuggets",
+    "points": 14.7,
+    "assists": 2.5,
+    "rebounds": 5.2,
+    "fieldGoalPercentage": 58.5,
+    "threePointPercentage": 29.9
+  },
+  {
+    "id": 41,
+    "name": "Jaden Ivey",
+    "team": "Detroit Pistons",
+    "points": 16.3,
+    "assists": 5.4,
+    "rebounds": 3.3,
+    "fieldGoalPercentage": 42.6,
+    "threePointPercentage": 32.6
+  },
+  {
+    "id": 42,
+    "name": "Austin Reaves",
+    "team": "Los Angeles Lakers",
+    "points": 13.5,
+    "assists": 3.4,
+    "rebounds": 3.7,
+    "fieldGoalPercentage": 53.4,
+    "threePointPercentage": 35.8
+  },
+  {
+    "id": 43,
+    "name": "Ivica Zubac",
+    "team": "Los Angeles Clippers",
+    "points": 10.4,
+    "assists": 1.5,
+    "rebounds": 8.7,
+    "fieldGoalPercentage": 63.2,
+    "threePointPercentage": 0
+  },
+  {
+    "id": 44,
+    "name": "Pascal Siakam",
+    "team": "Toronto Raptors",
+    "points": 24.2,
+    "assists": 5.1,
+    "rebounds": 7.8,
+    "fieldGoalPercentage": 47.2,
+    "threePointPercentage": 29.7
+  },
+  {
+    "id": 45,
+    "name": "Bojan Bogdanović",
+    "team": "Detroit Pistons",
+    "points": 21.0,
+    "assists": 2.6,
+    "rebounds": 3.6,
+    "fieldGoalPercentage": 46.9,
+    "threePointPercentage": 38.8
+  },
+  {
+    "id": 46,
+    "name": "LaMelo Ball",
+    "team": "Charlotte Hornets",
+    "points": 24.0,
+    "assists": 8.4,
+    "rebounds": 5.5,
+    "fieldGoalPercentage": 40.3,
+    "threePointPercentage": 32.6
+  },
+  {
+    "id": 47,
+    "name": "Jrue Holiday",
+    "team": "Boston Celtics",
+    "points": 19.3,
+    "assists": 5.4,
+    "rebounds": 4.5,
+    "fieldGoalPercentage": 47.5,
+    "threePointPercentage": 38.1
+  },
+  {
+    "id": 48,
+    "name": "Terry Rozier",
+    "team": "Charlotte Hornets",
+    "points": 21.1,
+    "assists": 5.0,
+    "rebounds": 4.4,
+    "fieldGoalPercentage": 42.6,
+    "threePointPercentage": 38.4
+  }]
+ 
